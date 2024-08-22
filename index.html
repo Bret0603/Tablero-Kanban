@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <title>Tablero Kanban</title>
+</head>
+<body>
+    <header>
+        <img src="img/LogoBlanco.svg" alt="logogics" class="header-image">
+        <h1>Tablero Kanban</h1>
+    </header>
+    <main>
+      <button id="menu-toggle" class="menu-toggle-btn"><i class="fas fa-bars"></i></button>
+      <button id="clear-board" class="menu-toggle-btn"><i class="fas fa-trash"></i></button>
+      <div class="side-menu" id="side-menu">
+        <h2>Menu</h2>
+        <button id="new-board" class="menu-btn">Nuevo Tablero</button>
+        <button id="edit-board" class="menu-btn">Editar Tablero</button>
+    </div>
+        <div class="board">
+            <form id="todo-form">
+                <input type="text" placeholder="Nueva Tarea" id="todo-input" required />
+                <button type="submit">Agregar Tarea</button>
+            </form>
+            <div class="lanes">
+                <div class="swin-lane" id="todo-lane">
+                    <h3 class="heading">Por Hacer</h3>
+                </div>
+                <div class="swin-lane" id="doing-lane">
+                    <h3 class="heading">En Ejecución</h3>
+                </div>
+                <div class="swin-lane" id="done-lane">
+                    <h3 class="heading">Terminado</h3>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <img src="img/LogoCEET.png" alt="imagen" class="footer-imageceet">
+        <div class="footer-content">
+            <p>Centro de Electricidad Electrónica y Telecomunicaciones - Teleinformática - SENA - Regional Distrito Capital Cra. 30 #17B-25Sur, Bogotá</p>
+            <p>Bret Milton Sierra Royero</p>
+            <p>2024</p>
+        </div>
+        <img src="img/Logosennova.svg" alt="imagen" class="footer-imagesennova">
+    </footer>
+
+    <script src="JavaScript/drag.js"></script>
+    <script src="JavaScript/todo.js"></script>
+    <script src="JavaScript/side-menu.js"></script>
+</body>
+</html>
