@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById('todo-form');
-    const input = document.getElementById('todo-input');
     const todoLane = document.getElementById('todo-lane');
     const doingLane = document.getElementById('doing-lane');
     const doneLane = document.getElementById('done-lane');
@@ -33,29 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Crear un nuevo elemento de tarea
-    const createTaskElement = (taskText) => {
-        const taskContainer = document.createElement('div');
-        taskContainer.className = 'task-container';
-        taskContainer.draggable = true;
-        taskContainer.id = `task-${Date.now()}`; // Genera un ID único para cada tarea
-
-        taskContainer.innerHTML = `
-            <p class="task">${taskText}</p>
-            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-            <button class="delete-btn"><i class="fas fa-trash"></i></button>
-        `;
-
-        taskContainer.addEventListener('dragstart', handleDragStart);
-        taskContainer.addEventListener('dragend', handleDragEnd);
-
-        // Agregar eventos a los botones de editar y eliminar
-        taskContainer.querySelector('.edit-btn').addEventListener('click', () => startEditing(taskContainer));
-        taskContainer.querySelector('.delete-btn').addEventListener('click', () => taskContainer.remove());
-
-        return taskContainer;
-    };
-
     // Manejar la edición de una tarea
     const startEditing = (taskContainer) => {
         const taskText = taskContainer.querySelector('.task');
@@ -80,17 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     };
-
-    // Agregar una nueva tarea al form
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const taskText = input.value.trim();
-        if (taskText) {
-            const taskElement = createTaskElement(taskText);
-            todoLane.appendChild(taskElement);
-            input.value = '';
-        }
-    });
 
     // Agregar eventos a las zonas de suelta
     [todoLane, doingLane, doneLane].forEach(zone => {

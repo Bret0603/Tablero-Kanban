@@ -8,8 +8,9 @@ html, body {
 header {
     display: flex;
     align-items: center;
-    justify-content: center;
     height: 80px;
+    padding: 5px;
+    padding-left: 20px;
     color: white;
     background-color: #39A136;
     text-align: center;
@@ -19,7 +20,9 @@ header {
     max-width: 120px;
     height: auto;
     background-color: white;
-    margin: 50px;
+    float: left;
+    margin: 0px;
+    
 }
 
 h1 {
@@ -160,7 +163,60 @@ main {
 }
 
 
+.add-lane-btn {
+    position: absolute; /* Asegúrate de que el botón esté en una posición absoluta */
+    color: white; /* Color del texto blanco */
+    border: none; /* Sin bordes */
+    border-radius: 50%; /* Círculo perfecto */
+    width: 50px; /* Ancho del botón */
+    height: 50px; /* Alto del botón, igual al ancho para mantener el círculo */
+    background-color: #007bff; /* Color de fondo azul */
+    display: flex; /* Usar flexbox para centrar el icono */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    font-size: 24px; /* Tamaño del icono */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
+    z-index: 1000; /* Asegura que el botón esté por encima de otros elementos */
+    text-align: center; /* Asegura que el texto (icono) esté centrado */
+}
 
+.add-lane-btn:hover {
+    background-color: #0056b3; /* Color de fondo azul más oscuro cuando se pasa el cursor sobre el botón */
+}
+
+.add-lane-btn:focus {
+    outline: none; /* Quita el borde de enfoque predeterminado del botón */
+}
+
+.add-lane-btn:active {
+    background-color: #004494; /* Color de fondo azul aún más oscuro cuando el botón está presionado */
+}
+
+.swin-lane {
+    position: relative; /* Necesario para que el botón de eliminar se posicione en relación a la columna */
+    padding: 10px;
+    border: 1px solid #ddd; /* Añadir borde para claridad */
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Fondo blanco por defecto */
+}
+
+.delete-lane-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white; /* Color rojo para el icono */
+    font-size: 20px; /* Tamaño del icono */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.delete-lane-btn:hover {
+    color: #ff4c4c; 
+}
 
 
 .delete-board-btn {
