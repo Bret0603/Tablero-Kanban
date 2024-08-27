@@ -35,14 +35,18 @@ h1 {
 }
 
 main {
-    flex: 1;
+    flex: 1; /* Permite que el main ocupe el espacio restante entre el header y el footer */
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: flex-start; /* Alinea el contenido al inicio verticalmente */
     padding: 20px;
-    width: 100%;
     box-sizing: border-box;
-    overflow-x: auto;
+    overflow-x: auto; /* Permite el desplazamiento horizontal si el contenido es más ancho */
+}
+.lanes {
+    display: flex;
+    flex-wrap: nowrap; /* No permite que las columnas se envuelvan a la siguiente línea */
+    max-width: 100%; /* Limita el ancho de las columnas al ancho del contenedor principal */
 }
 #todo-form{
     margin-bottom: 20px;
@@ -86,8 +90,8 @@ main {
     display:flex;
     flex-direction: column;
     gap:12px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
-    padding: 12px;
+    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.25);
+    padding: 120px;
     border-radius: 4px;
     width:225px;
     min-height: 120px;
@@ -95,14 +99,10 @@ main {
 }
 
 #todo-lane{
-    background: #e7e437;
+    background: #f5f37e;
 }
-#doing-lane{
-    background-color:#f83b3b ;
-}
-#done-lane{
-    background-color: #39A136;
-}
+
+
 .menu-toggle-btn {
     position: fixed;
     top: 100px;
@@ -163,35 +163,101 @@ main {
 }
 
 
-.add-lane-btn {
-    position: absolute; /* Asegúrate de que el botón esté en una posición absoluta */
-    color: white; /* Color del texto blanco */
-    border: none; /* Sin bordes */
-    border-radius: 50%; /* Círculo perfecto */
-    width: 50px; /* Ancho del botón */
-    height: 50px; /* Alto del botón, igual al ancho para mantener el círculo */
-    background-color: #007bff; /* Color de fondo azul */
-    display: flex; /* Usar flexbox para centrar el icono */
-    align-items: center; /* Centrar verticalmente */
-    justify-content: center; /* Centrar horizontalmente */
-    font-size: 24px; /* Tamaño del icono */
-    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
-    transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
-    z-index: 1000; /* Asegura que el botón esté por encima de otros elementos */
-    text-align: center; /* Asegura que el texto (icono) esté centrado */
+
+.task {
+    margin: 0;
+    font-size: 14px;
 }
 
-.add-lane-btn:hover {
-    background-color: #0056b3; /* Color de fondo azul más oscuro cuando se pasa el cursor sobre el botón */
+
+
+.add-task-btn {
+    display: left;
+    margin: 10px 0;
+    padding: 5px 10px;
+    background-color: #1f6dc0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.add-lane-btn:focus {
-    outline: none; /* Quita el borde de enfoque predeterminado del botón */
+.add-task-btn:hover {
+    background-color: #0056b3;
 }
 
-.add-lane-btn:active {
-    background-color: #004494; /* Color de fondo azul aún más oscuro cuando el botón está presionado */
+
+
+
+
+.task-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e4cccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
+.task-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #fff;
+    position: relative;
+}
+
+.task-container.is-dragging {
+    opacity: 0.5;
+}
+
+.delete-btn, .edit-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.edit-btn {
+    right: 35px;
+}
+
+.delete-btn i, .edit-btn i {
+    font-size: 16px;
+}
+
+
+.add-column-btn {
+    position: flex;
+    bottom: 20px;
+    right: 10px;
+    color: white;
+    border: none;
+    border-radius: 30%;
+    width: 50px;
+    height: 50px;
+    background-color: #008cff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10; /* Asegura que el botón esté por encima de otros elementos */
+}
+
+.add-column-btn:hover {
+    background-color: #0056b3;
+}
+
+.add-column-btn:focus {
+    outline: none;
+}
+
+.add-column-btn:active {
+    background-color: #004494;
+}
+
 
 .swin-lane {
     position: relative; /* Necesario para que el botón de eliminar se posicione en relación a la columna */
@@ -208,7 +274,7 @@ main {
     right: 10px;
     background: none;
     border: none;
-    color: white; /* Color rojo para el icono */
+    color: rgb(243, 238, 238); /* Color rojo para el icono */
     font-size: 20px; /* Tamaño del icono */
     cursor: pointer;
     transition: color 0.3s ease;
@@ -242,50 +308,6 @@ main {
     position: relative;
 }
 
-
-.task {
-    margin: 0;
-    flex: 1;
-    font-size: 16px; 
-    font-family: 'Arial', sans-serif; 
-    font-weight: normal; 
-    color: #333; 
-    line-height: 1.5; /
-}
-
-.task-container .edit-btn, 
-.task-container .delete-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-left: 5px; 
-    font-size: 18px;  
-}
-
-
-.task-container .edit-btn:hover,
-.task-container .delete-btn:hover {
-    color: #007bff; 
-}
-
-.button-container {
-    display: flex;
-    gap: 5px; 
-}
-
-
-.edit-mode .task {
-    display: none;
-}
-
-.edit-mode input {
-    display: inline-block;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-
-
 footer {
     height: 150px; 
     width: 100%;
@@ -299,6 +321,7 @@ footer {
     align-items: center;
     justify-content: space-between; 
     position: relative;
+    flex-shrink: 0;
 }
 
 .footer-content {

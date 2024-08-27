@@ -1,39 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Configura la funcionalidad de arrastrar y soltar
     setupDragAndDrop();
 
-    const form = document.getElementById('todo-form');
-    const input = document.getElementById('todo-input');
-    const addLaneButton = document.getElementById('add-lane-btn');
     const lanesContainer = document.querySelector('.lanes');
     let laneCount = document.querySelectorAll('.swin-lane').length;
 
-    // Añadir botón de eliminar a las columnas existentes al cargar la página
+    // Añadir botón de eliminar, agregar tarea y agregar columna a las columnas existentes
     document.querySelectorAll('.swin-lane').forEach(lane => {
         addDeleteButton(lane);
+        setupTaskButton(lane);
+        addAddColumnButton(lane);
+        makeEditable(lane.querySelector('.heading')); // Hacer el título editable
     });
 
-    // Manejar la creación de una nueva tarea
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const taskText = input.value.trim();
-        if (taskText) {
-            const taskElement = createTaskElement(taskText);
-            const todoLane = document.getElementById('todo-lane');
-            todoLane.appendChild(taskElement);
-            input.value = '';
-        }
-    });
-
-    // Manejar la creación de una nueva columna
-    addLaneButton.addEventListener('click', () => {
-        laneCount++;
+    function createNewLane(count) {
         const newLane = document.createElement('div');
         newLane.classList.add('swin-lane');
-        newLane.id = `lane-${laneCount}`;
+        newLane.id = `lane-${count}`;
         newLane.setAttribute('draggable', 'true');
 
-        const colorIndex = (laneCount - 1) % colors.length;
+        const colorIndex = (count - 1) % colors.length;
         newLane.style.backgroundColor = colors[colorIndex];
 
         const heading = document.createElement('h3');
@@ -43,32 +28,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cardsContainer = document.createElement('div');
         cardsContainer.classList.add('cards-container');
-        cardsContainer.id = `cards-${laneCount}`;
+        cardsContainer.id = `cards-${count}`;
         newLane.appendChild(cardsContainer);
 
-        // Crear botón de eliminar
+        // Crear y añadir botón de eliminar, agregar tarea y agregar columna
         addDeleteButton(newLane);
+        setupTaskButton(newLane);
+        addAddColumnButton(newLane);
 
-        lanesContainer.appendChild(newLane);
+        makeEditable(heading); // Hacer el título editable
 
-        repositionAddLaneButton();
-        makeEditable(heading); // Hacer el título de la nueva columna editable
-        setupDragAndDrop(); // Reconfigura el arrastre y la suelta
-    });
+        return newLane;
+    }
 
-    // Función para añadir botón de eliminar a una columna
+    function addAddColumnButton(lane) {
+        const addColumnButton = document.createElement('button');
+        addColumnButton.classList.add('add-column-btn');
+        addColumnButton.textContent = '+';
+
+        addColumnButton.addEventListener('click', () => {
+            laneCount++;
+            const newLane = createNewLane(laneCount);
+            lanesContainer.appendChild(newLane);
+            repositionAddColumnButtons(); // Asegúrate de que los botones de agregar columna estén en la esquina
+            setupDragAndDrop(); // Reconfigura el arrastre y la suelta
+        });
+
+        lane.appendChild(addColumnButton);
+    }
+
     function addDeleteButton(lane) {
+        if (lane.querySelector('.delete-lane-btn')) return;
+
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-lane-btn');
         deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
         deleteButton.addEventListener('click', () => {
             lane.remove();
-            repositionAddLaneButton(); // Reubicar el botón de agregar después de eliminar una columna
+            repositionAddColumnButtons(); // Reubicar los botones de agregar después de eliminar una columna
         });
         lane.appendChild(deleteButton);
     }
 
-    // Crear un nuevo elemento de tarea
+    function setupTaskButton(lane) {
+        if (lane.querySelector('.add-task-btn')) return;
+
+        const taskButton = document.createElement('button');
+        taskButton.classList.add('add-task-btn');
+        taskButton.textContent = 'Agregar Tarea';
+
+        taskButton.addEventListener('click', () => {
+            const inputContainer = document.createElement('div');
+            inputContainer.classList.add('task-input-container');
+
+            const taskInput = document.createElement('input');
+            taskInput.classList.add('task-input');
+            taskInput.placeholder = 'Introduce el nombre de la tarea';
+            taskInput.type = 'text';
+            taskInput.autofocus = true;
+
+            inputContainer.appendChild(taskInput);
+            lane.insertBefore(inputContainer, taskButton); // Insertar el input al inicio
+
+            // Crear tarea al salir del campo de entrada
+            taskInput.addEventListener('blur', () => {
+                const taskText = taskInput.value.trim();
+                if (taskText) {
+                    const taskElement = createTaskElement(taskText);
+                    const tasksContainer = lane.querySelector('.cards-container');
+                    tasksContainer.appendChild(taskElement);
+                    setupDragAndDrop(); // Configura el arrastre y la suelta para la nueva tarea
+                }
+                inputContainer.remove(); // Elimina el recuadro de entrada después de agregar la tarea
+            });
+
+            // Crear tarea cuando se presiona Enter en el campo de entrada
+            taskInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    taskInput.blur(); // Activa el evento blur para agregar la tarea
+                }
+            });
+        });
+
+        lane.appendChild(taskButton);
+    }
+
     function createTaskElement(taskText) {
         const taskContainer = document.createElement('div');
         taskContainer.className = 'task-container';
@@ -90,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return taskContainer;
     }
 
-    // Manejar la edición de una tarea
     function startEditing(taskContainer) {
         const taskText = taskContainer.querySelector('.task');
         const editInput = document.createElement('input');
@@ -99,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editInput.className = 'edit-input';
 
         taskContainer.classList.add('edit-mode');
-        taskContainer.querySelector('.task').replaceWith(editInput);
+        taskText.replaceWith(editInput);
         editInput.focus();
 
         editInput.addEventListener('blur', () => {
@@ -115,26 +158,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Hacer el encabezado editable
     function makeEditable(element) {
         element.addEventListener('click', () => {
-            // Solo convertir a editable si no está en modo edición
             if (!element.classList.contains('editing')) {
                 const currentText = element.textContent;
                 const input = document.createElement('input');
                 input.type = 'text';
-                input.value = currentText; // Mantener el texto actual en el campo de entrada
-                element.textContent = '';
-                element.appendChild(input);
+                input.value = currentText;
+                input.className = 'edit-input';
+                
+                element.classList.add('editing');
+                element.replaceWith(input);
                 input.focus();
-                element.classList.add('editing'); // Marcar el elemento como en modo edición
-
+                
                 input.addEventListener('blur', () => {
-                    const newValue = input.value.trim();
-                    element.textContent = newValue || currentText;
-                    element.classList.remove('editing'); // Quitar el modo edición
+                    const newText = input.value.trim();
+                    element.textContent = newText ? newText : currentText;
+                    element.classList.remove('editing');
+                    input.replaceWith(element);
                 });
-
+                
                 input.addEventListener('keydown', (event) => {
                     if (event.key === 'Enter') {
                         input.blur();
@@ -144,63 +187,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Configurar la funcionalidad de arrastrar y soltar
     function setupDragAndDrop() {
-        const draggables = document.querySelectorAll('.task-container');
-        const droppables = document.querySelectorAll('.swin-lane');
+        const tasks = document.querySelectorAll('.task-container');
+        const lanes = document.querySelectorAll('.swin-lane');
 
-        const handleDragStart = (event) => {
-            event.dataTransfer.setData('text/plain', event.target.id);
-            event.target.classList.add('is-dragging');
-        };
-
-        const handleDragEnd = (event) => {
-            event.target.classList.remove('is-dragging');
-        };
-
-        const handleDragOver = (event) => {
-            event.preventDefault();
-        };
-
-        const handleDrop = (event) => {
-            event.preventDefault();
-            const id = event.dataTransfer.getData('text/plain');
-            const draggedElement = document.getElementById(id);
-            const dropZone = event.target.closest('.swin-lane');
-
-            if (dropZone && draggedElement) {
-                dropZone.querySelector('.cards-container').appendChild(draggedElement);
-            }
-        };
-
-        draggables.forEach(task => {
+        tasks.forEach(task => {
             task.addEventListener('dragstart', handleDragStart);
             task.addEventListener('dragend', handleDragEnd);
         });
 
-        droppables.forEach(zone => {
-            zone.addEventListener('dragover', handleDragOver);
-            zone.addEventListener('drop', handleDrop);
+        lanes.forEach(lane => {
+            lane.addEventListener('dragover', handleDragOver);
+            lane.addEventListener('drop', handleDrop);
         });
-
-        // Hacer que todos los títulos de las columnas existentes sean editables
-        document.querySelectorAll('.heading').forEach(makeEditable);
     }
 
-    // Reubicar el botón de agregar al lado de la última columna
-    function repositionAddLaneButton() {
-        const lanes = document.querySelectorAll('.swin-lane');
-        const lastLane = lanes[lanes.length - 1];
-        const rect = lastLane.getBoundingClientRect();
-        const button = document.getElementById('add-lane-btn');
-        
-        button.style.top = `${rect.top + window.scrollY}px`;
-        button.style.left = `${rect.right + window.scrollX + 10}px`; // Ajusta la distancia a la derecha
+    function handleDragStart(event) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+        event.target.classList.add('dragging');
     }
 
-    // Reubicar el botón de agregar cuando la página se carga
-    repositionAddLaneButton();
+    function handleDragEnd(event) {
+        event.target.classList.remove('dragging');
+    }
 
-    // Colores para las columnas
-    const colors = ['#FFDDC1', '#FFABAB', '#FFC3A0', '#D5AAFF', '#6EC1E4'];
+    function handleDragOver(event) {
+        event.preventDefault();
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        const taskId = event.dataTransfer.getData('text/plain');
+        const task = document.getElementById(taskId);
+        const dropTarget = event.currentTarget.querySelector('.cards-container');
+
+        if (dropTarget) {
+            dropTarget.appendChild(task);
+        }
+    }
+
+    // Define los colores de las columnas si es necesario
+    const colors = ['#FAD02E', '#F28D35', '#E85D75', '#1B998B'];
 });
