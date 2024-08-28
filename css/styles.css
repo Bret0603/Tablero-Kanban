@@ -8,21 +8,21 @@ html, body {
 header {
     display: flex;
     align-items: center;
-    height: 80px;
+    height: 80px; /* Permite que el encabezado ajuste su altura según el contenido */
     padding: 5px;
     padding-left: 20px;
     color: white;
     background-color: #39A136;
     text-align: center;
+    position: relative;
+    z-index: 1000;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en múltiples líneas si es necesario */
 }
 
 .header-image {
-    max-width: 120px;
+    max-width: 100px; /* Ajusta el tamaño máximo de la imagen */
     height: auto;
-    background-color: white;
-    float: left;
-    margin: 0px;
-    
+    margin-right: 10px; /* Reduce el margen para pantallas pequeñas */
 }
 
 h1 {
@@ -32,7 +32,90 @@ h1 {
     font-size: 20px;
     text-align: center;
     flex: 1;
+    flex-basis: 0; /* Permite que el h1 ocupe el espacio restante */
 }
+
+.menu-toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background-color: #41648a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1001; /* Asegura que el botón esté por encima de otros elementos */
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Apila los elementos verticalmente en pantallas más pequeñas */
+        align-items: flex-start;
+    }
+
+    .header-image {
+        max-width: 80px; /* Ajusta el tamaño de la imagen en pantallas más pequeñas */
+    }
+
+    h1 {
+        font-size: 18px; /* Ajusta el tamaño de la fuente en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 16px; /* Ajusta aún más el tamaño de la fuente si es necesario */
+    }
+
+    .menu-toggle-btn {
+        padding: 8px; /* Reduce el padding del botón en pantallas más pequeñas */
+    }
+}
+
+
+
+.side-menu {
+    position: fixed; 
+    top: 0;
+    right: 0; 
+    width: 300px; 
+    height: 100%;
+    background-color: #a09f9d;
+    border-left: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); 
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+ 
+}
+.side-menu.show {
+    transform: translateX(0); /* Muestra el menú */
+}
+
+.menu-item {
+    margin-bottom: 20px;
+}
+
+.menu-btn {
+    display: block;
+    padding: 10px;
+    border: none;
+    background-color: #4794e7;
+    color: rgb(252, 252, 252);
+    text-align: center;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.menu-btn:hover {
+    background-color: #0056b3;
+}
+
 
 main {
     flex: 1; /* Permite que el main ocupe el espacio restante entre el header y el footer */
@@ -43,10 +126,24 @@ main {
     box-sizing: border-box;
     overflow-x: auto; /* Permite el desplazamiento horizontal si el contenido es más ancho */
 }
+@media (max-width: 768px) {
+    main {
+        padding: 10px; /* Reduce el padding para pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 5px; /* Ajusta aún más el padding si es necesario */
+    }
+}
 .lanes {
     display: flex;
-    flex-wrap: nowrap; /* No permite que las columnas se envuelvan a la siguiente línea */
-    max-width: 100%; /* Limita el ancho de las columnas al ancho del contenedor principal */
+    flex-wrap: wrap; /* Permite que las columnas se envuelvan a la siguiente línea */
+    gap: 12px; /* Espacio entre columnas */
+    max-width: 100%; /* Limita el ancho del contenedor al ancho del viewport */
+    padding: 10px; /* Espacio dentro del contenedor */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
 }
 #todo-form{
     margin-bottom: 20px;
@@ -103,64 +200,7 @@ main {
 }
 
 
-.menu-toggle-btn {
-    position: fixed;
-    top: 100px;
-    left: 20px;
-    background-color: #41648a;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 999; 
-}
-#menu-toggle {
-    left: 20px;
-}
 
-#clear-board {
-    left: 70px; 
-}
-
-
-.side-menu {
-    position: fixed; 
-    top: 80px;
-    left: 0;
-    width: 300px; 
-    bottom: 0;
-    background-color: #faf0f0;
-    height:  calc(150vh - 730px);
-    border-right: 1px solid #ddd;
-    padding: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    display: none; 
-    z-index: 1000; 
-    overflow-y: auto; 
-    
-}
-
-.menu-item {
-    margin-bottom: 20px;
-}
-
-.menu-btn {
-    display: block;
-    padding: 10px;
-    border: none;
-    background-color: #87a4c2;
-    color: white;
-    text-align: center;
-    width: 100%;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.menu-btn:hover {
-    background-color: #0056b3;
-}
 
 
 
@@ -281,7 +321,7 @@ main {
 }
 
 .delete-lane-btn:hover {
-    color: #ff4c4c; 
+    color: #39A136; 
 }
 
 
@@ -309,7 +349,7 @@ main {
 }
 
 footer {
-    height: 150px; 
+
     width: 100%;
     color: white;
     background-color: #39A136;
@@ -320,8 +360,8 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between; 
-    position: relative;
-    flex-shrink: 0;
+    
+    flex-wrap: wrap;
 }
 
 .footer-content {
@@ -385,4 +425,14 @@ footer {
     .footer-content {
         padding: 5px; 
     }
+}
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }

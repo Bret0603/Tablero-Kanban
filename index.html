@@ -10,40 +10,52 @@
 </head>
 <body>
     <header>
-        <img src="img/LogoBlanco.svg" alt="logogics" class="header-image">
-        <h1 id="board-title">Tablero Kanban</h1>
-    </header>
-    <main>
-        <button id="menu-toggle" class="menu-toggle-btn"><i class="fas fa-bars"></i></button>
-       
-            
+        <!-- Botón de menú accesible -->
+        <button id="menu-toggle" class="menu-toggle-btn" aria-expanded="false" aria-controls="side-menu">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+            <span class="visually-hidden">Abrir menú</span>
         </button>
-        <div class="side-menu" id="side-menu">
-            <h2>Menu</h2>
+
+        <!-- Logo con texto alternativo -->
+        <img src="img/LogoBlanco.svg" alt="Logotipo de GICS" class="header-image" />
+
+        <!-- Título principal con etiqueta aria-label -->
+        <h1 id="board-title">Tablero Kanban</h1>
+
+        <!-- Menú lateral con atributos ARIA -->
+        <div class="side-menu" id="side-menu" role="navigation" aria-labelledby="menu-toggle">
+            <h2>Menú</h2>
             <button id="new-board" class="menu-btn">Nuevo Tablero</button>
             <button id="edit-board" class="menu-btn">Editar Tablero</button>
             <button id="delete-board" class="menu-btn">Eliminar Tablero</button>
         </div>
-        
-        <div class="lanes">
+    </header>
+
+    <main>
+        <div class="lanes" role="region" aria-label="Columnas del tablero">
             <div class="swin-lane" id="todo-lane" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
                 <h3 class="heading">Nueva Columna</h3>
-                <div class="cards-container" id="cards-1">
+                <div class="cards-container" id="cards-1" aria-live="polite">
                     <!-- Las tareas se agregarán aquí dinámicamente -->
                 </div>
-                <button class="delete-lane-btn"><i class="fas fa-trash"></i></button>
+                <!-- Botón de eliminar columna -->
+                <button class="delete-lane-btn" aria-label="Eliminar columna">
+                    <i class="fas fa-trash" aria-hidden="true"></i>
+                </button>
             </div>
             <!-- Más columnas aquí -->
         </div>
     </main>
+
     <footer>
-        <img src="img/LogoCEET.png" alt="imagen" class="footer-imageceet">
+        <!-- Logos con texto alternativo -->
+        <img src="img/LogoCEET.png" alt="Logotipo del CEET" class="footer-imageceet" />
         <div class="footer-content">
             <p>Centro de Electricidad Electrónica y Telecomunicaciones - Teleinformática - SENA - Regional Distrito Capital Cra. 30 #17B-25Sur, Bogotá</p>
             <p>Bret Milton Sierra Royero</p>
             <p>2024</p>
         </div>
-        <img src="img/Logosennova.svg" alt="imagen" class="footer-imagesennova">
+        <img src="img/Logosennova.svg" alt="Logotipo de Sennova" class="footer-imagesennova" />
     </footer>
 
     <script src="JavaScript/drag.js"></script>

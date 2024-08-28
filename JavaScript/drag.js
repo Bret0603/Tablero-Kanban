@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const heading = document.createElement('h3');
         heading.classList.add('heading');
-        heading.textContent = 'Nueva Columna';
+        heading.textContent = 'Ingresar Nombre';
         newLane.appendChild(heading);
 
         const cardsContainer = document.createElement('div');
