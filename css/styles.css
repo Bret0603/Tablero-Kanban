@@ -40,8 +40,8 @@ h1 {
     top: 50%;
     right: 20px;
     transform: translateY(-50%);
-    background-color: #41648a;
-    color: white;
+    background-color: white;
+    color: #39A136;
     border: none;
     border-radius: 4px;
     padding: 10px;
@@ -215,7 +215,7 @@ main {
     display: left;
     margin: 10px 0;
     padding: 5px 10px;
-    background-color: #1f6dc0;
+    background-color: #39A136;
     color: white;
     border: none;
     border-radius: 4px;
@@ -223,7 +223,8 @@ main {
 }
 
 .add-task-btn:hover {
-    background-color: #0056b3;
+    background-color: white;
+    color: #39A136;
 }
 
 
@@ -276,7 +277,7 @@ main {
     border-radius: 30%;
     width: 50px;
     height: 50px;
-    background-color: #008cff;
+    background-color: #39A136;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -287,7 +288,8 @@ main {
 }
 
 .add-column-btn:hover {
-    background-color: #0056b3;
+    background-color: white;
+    color:#39A136;
 }
 
 .add-column-btn:focus {
@@ -314,14 +316,14 @@ main {
     right: 10px;
     background: none;
     border: none;
-    color: rgb(243, 238, 238); /* Color rojo para el icono */
+    color: #39A136;
     font-size: 20px; /* Tamaño del icono */
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .delete-lane-btn:hover {
-    color: #39A136; 
+    color: white; 
 }
 
 

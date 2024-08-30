@@ -19,22 +19,27 @@
         <!-- Logo con texto alternativo -->
         <img src="img/LogoBlanco.svg" alt="Logotipo de GICS" class="header-image" />
 
-        <!-- Título principal con etiqueta aria-label -->
+        <!-- Título principal -->
         <h1 id="board-title">Tablero Kanban</h1>
 
         <!-- Menú lateral con atributos ARIA -->
-        <div class="side-menu" id="side-menu" role="navigation" aria-labelledby="menu-toggle">
+        <nav class="side-menu" id="side-menu" role="navigation" aria-labelledby="menu-toggle">
             <h2>Menú</h2>
-            <button id="new-board" class="menu-btn">Nuevo Tablero</button>
-            <button id="edit-board" class="menu-btn">Editar Tablero</button>
-            <button id="delete-board" class="menu-btn">Eliminar Tablero</button>
-        </div>
+            <ul>
+                <li><button id="new-board" class="menu-btn" aria-label="Crear un nuevo tablero">Nuevo Tablero</button></li>
+                <li><button id="edit-board" class="menu-btn" aria-label="Editar el tablero actual">Editar Tablero</button></li>
+                <li><button id="delete-board" class="menu-btn" aria-label="Eliminar el tablero actual">Eliminar Tablero</button></li>
+                <li><button id="connect-db-btn" class= "menu-btn" aria-label="Conectar a la base de datos">Conectar a la base de datos</button></li>
+                <p id="db-status-message"></p>
+
+            </li>
+        </nav>
     </header>
 
     <main>
-        <div class="lanes" role="region" aria-label="Columnas del tablero">
-            <div class="swin-lane" id="todo-lane" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
-                <h3 class="heading">Nueva Columna</h3>
+        <section class="lanes" role="region" aria-label="Columnas del tablero">
+            <div class="swin-lane" id="todo-lane" role="region" aria-label="Columna de tareas por hacer" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
+                <h3 class="heading">Ingresar Nombre</h3>
                 <div class="cards-container" id="cards-1" aria-live="polite">
                     <!-- Las tareas se agregarán aquí dinámicamente -->
                 </div>
@@ -43,8 +48,8 @@
                     <i class="fas fa-trash" aria-hidden="true"></i>
                 </button>
             </div>
-            <!-- Más columnas aquí -->
-        </div>
+            <!-- Más columnas se pueden agregar aquí -->
+        </section>
     </main>
 
     <footer>

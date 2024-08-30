@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editBoardBtn = document.getElementById('edit-board');
     const deleteBoardBtn = document.getElementById('delete-board');
     const newBoardBtn = document.getElementById('new-board');
-    const baseColumn = document.getElementById('todo-lane'); // La columna base para clonar
+    const addColumnBtn = document.getElementById('add-column');
     const lanes = document.querySelector('.lanes');
 
     let isEditing = false;
@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función para añadir eventos a los botones dentro de una columna
     const addColumnEvents = (column) => {
-        // Manejar evento para el botón de eliminar columna
         const deleteLaneBtn = column.querySelector('.delete-lane-btn');
-        deleteLaneBtn.addEventListener('click', () => {
-            column.remove();
-        });
+        if (deleteLaneBtn) {
+            deleteLaneBtn.addEventListener('click', () => {
+                column.remove();
+            });
+        }
 
-        // Manejar evento para el botón de agregar tarea
         const addTaskBtn = column.querySelector('.add-task-btn');
         if (addTaskBtn) {
             addTaskBtn.addEventListener('click', () => {
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 taskContainer.appendChild(taskInput);
                 taskInput.focus();
 
-                // Guardar tarea al presionar Enter
                 taskInput.addEventListener('keypress', (event) => {
                     if (event.key === 'Enter') {
                         event.preventDefault();
@@ -49,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                // Cancelar tarea al perder el enfoque
                 taskInput.addEventListener('blur', () => {
                     const taskText = taskInput.value.trim();
                     if (taskText) {
@@ -63,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Agregar eventos a las tareas existentes
         column.querySelectorAll('.task').forEach(task => {
             task.addEventListener('click', () => {
                 const taskText = prompt('Edita la tarea:', task.textContent);
@@ -84,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const input = button.querySelector('input');
         input.focus();
 
-        // Guardar cambios al presionar Enter
         const saveChanges = () => {
             const newText = input.value.trim();
             if (newText) {
@@ -95,16 +91,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     boardTitle.textContent = newText;
                     localStorage.setItem('boardTitle', newText);
 
-                    // Limpiar las columnas existentes excepto la columna base
-                    lanes.innerHTML = '';
-
-                    // Clonar la columna base y añadirla
-                    const clonedColumn = baseColumn.cloneNode(true);
-                    clonedColumn.style.display = 'block'; // Hacer visible la columna clonada
-                    lanes.appendChild(clonedColumn);
-
-                    // Añadir eventos a los botones de la columna clonada
-                    addColumnEvents(clonedColumn);
+                    // Eliminar todas las columnas excepto la primera y limpiar tareas
+                    const columns = lanes.querySelectorAll('.swin-lane');
+                    if (columns.length > 0) {
+                        columns.forEach((column, index) => {
+                            if (index > 0) { // Mantener solo la primera columna
+                                column.remove();
+                            } else {
+                                // Limpiar las tareas de la primera columna
+                                const taskContainer = column.querySelector('.cards-container');
+                                taskContainer.innerHTML = ''; // Limpiar tareas
+                            }
+                        });
+                    } else {
+                        // Si no hay columnas, añadir una inicial
+                        const initialColumn = document.createElement('div');
+                        initialColumn.className = 'swin-lane';
+                        initialColumn.innerHTML = `
+                            <h3 class="heading">Ingresar Nombre</h3>
+                            <div class="cards-container" aria-live="polite"></div>
+                            <button class="delete-lane-btn" aria-label="Eliminar columna">
+                                <i class="fas fa-trash" aria-hidden="true"></i>
+                            </button>
+                            <button class="add-task-btn" aria-label="Agregar tarea">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
+                        `;
+                        lanes.appendChild(initialColumn);
+                        addColumnEvents(initialColumn);
+                    }
                 }
                 button.textContent = button.id === 'edit-board' ? 'Editar Tablero' : 'Nuevo Tablero';
                 sideMenu.classList.remove('show'); // Ocultar el menú
@@ -130,14 +145,21 @@ document.addEventListener('DOMContentLoaded', () => {
         boardTitle.textContent = savedTitle;
     }
 
-    // Verificar si hay columnas en el localStorage o en la página
-    if (localStorage.getItem('boardTitle') && !document.querySelector('.swin-lane')) {
-        // Clonar la columna base y añadirla si no hay columnas
-        const initialColumn = baseColumn.cloneNode(true);
-        initialColumn.style.display = 'block'; // Hacer visible la columna clonada
+    // Verificar si hay columnas en la página y añadir una inicial si no existe
+    if (!document.querySelector('.swin-lane')) {
+        const initialColumn = document.createElement('div');
+        initialColumn.className = 'swin-lane';
+        initialColumn.innerHTML = `
+            <h3 class="heading">Ingresar Nombre</h3>
+            <div class="cards-container" aria-live="polite"></div>
+            <button class="delete-lane-btn" aria-label="Eliminar columna">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+            </button>
+            <button class="add-task-btn" aria-label="Agregar tarea">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+            </button>
+        `;
         lanes.appendChild(initialColumn);
-
-        // Añadir eventos a los botones de la columna existente
         addColumnEvents(initialColumn);
     }
 
@@ -159,12 +181,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Eliminar el tablero
     deleteBoardBtn.addEventListener('click', () => {
-        // Eliminar todas las columnas
-        lanes.innerHTML = ''; 
-        // Restablecer el nombre del tablero al valor por defecto y actualizar localStorage
+        // Eliminar todas las columnas excepto la primera y limpiar tareas
+        const columns = lanes.querySelectorAll('.swin-lane');
+        if (columns.length > 0) {
+            columns.forEach((column, index) => {
+                if (index > 0) { // Mantener solo la primera columna
+                    column.remove();
+                } else {
+                    // Limpiar las tareas de la primera columna
+                    const taskContainer = column.querySelector('.cards-container');
+                    taskContainer.innerHTML = ''; // Limpiar tareas
+                }
+            });
+        }
         boardTitle.textContent = 'Nombre del tablero';
         localStorage.setItem('boardTitle', 'Nombre del tablero');
         sideMenu.classList.remove('show'); // Ocultar el menú
+    });
+
+    // Agregar una nueva columna
+    addColumnBtn.addEventListener('click', () => {
+        const newColumn = document.createElement('div');
+        newColumn.className = 'swin-lane';
+        newColumn.innerHTML = `
+            <h3 class="heading">Ingresar Nombre</h3>
+            <div class="cards-container" aria-live="polite"></div>
+            <button class="delete-lane-btn" aria-label="Eliminar columna">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+            </button>
+            <button class="add-task-btn" aria-label="Agregar tarea">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+            </button>
+        `;
+        lanes.appendChild(newColumn);
+        addColumnEvents(newColumn);
     });
 
     // Ocultar el menú si se hace clic fuera de él
