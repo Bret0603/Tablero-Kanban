@@ -1,0 +1,524 @@
+/* Estilos generales */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Evita el desplazamiento horizontal */
+  box-sizing: border-box; /* Asegura que el padding y los bordes no causen desbordamiento */
+}
+
+/* Encabezado */
+header {
+  display: flex;
+  align-items: center;
+  height: 80px;
+  padding: 5px;
+  padding-left: 20px;
+  color: white;
+  background-color: #39A136;
+  text-align: center;
+  position: relative;
+  z-index: 1000;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.header-image {
+  max-width: 100px;
+  height: auto;
+  margin-right: 10px;
+}
+
+h1 {
+  margin: 0;
+  color: white;
+  font-size: 20px;
+  flex: 1;
+}
+
+/* Botón del menú */
+.menu-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
+  background-color: white;
+  color: #39A136;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+
+/* Estilos para el menú lateral */
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px; /* Ancho fijo para el menú */
+  height: 100vh; /* Altura completa de la ventana */
+  background-color: #a09f9d; /* Color de fondo */
+  border-left: 1px solid #ddd; /* Borde para separar del contenido principal */
+  padding: 20px; /* Espaciado interno */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+  transform: translateX(100%); /* Oculta el menú por defecto */
+  transition: transform 0.3s ease; /* Transición suave al mostrar/ocultar */
+  overflow-y: auto; /* Permite desplazamiento vertical */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+.menu-section {
+  text-align: left; /* Alinea el contenido a la izquierda */
+}
+
+.side-menu.show {
+  transform: translateX(0);
+}
+
+.menu-title {
+  font-size: 1.5rem; /* Tamaño de fuente para el título del menú */
+  margin-bottom: 10px; /* Espaciado inferior */
+  color: #333; /* Color del texto */
+}
+
+.menu-subtitle {
+  font-size: 1.2rem; /* Tamaño de fuente para el subtítulo */
+  margin-bottom: 15px; /* Espaciado inferior */
+  color: #666; /* Color del texto */
+}
+
+.menu-list {
+  list-style-type: none; /* Elimina los puntos de la lista */
+  padding: 0; /* Elimina el padding por defecto */
+  margin-bottom: 20px; /* Espaciado inferior para separar del resto */
+}
+
+.menu-list li {
+  margin-bottom: 10px; /* Espaciado entre ítems */
+}
+
+.menu-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #39A136; /* Color de fondo */
+  color: #fcfcfc; /* Color del texto */
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Transición suave en hover */
+}
+
+.menu-btn:hover {
+  background-color: #0f345c; /* Color de fondo al pasar el ratón */
+}
+
+.db-status-message {
+  margin-top: 10px; /* Espaciado superior */
+  color: #ff0000; /* Color del texto para el estado de la base de datos */
+}
+
+/* Estilos para el contenido de tableros */
+.boards {
+  margin-top: 20px; /* Espaciado superior */
+}
+
+.boards-title {
+  font-size: 1.2rem; /* Tamaño de fuente para el título de tableros */
+  margin-bottom: 10px; /* Espaciado inferior */
+  color: #333; /* Color del texto */
+}
+
+.board-list {
+  list-style-type: none; /* Elimina los puntos de la lista */
+  padding: 0; /* Elimina el padding por defecto */
+  margin-bottom: 20px; /* Espaciado inferior para separar del botón */
+}
+.board-list li {
+  display: flex; /* Usa flexbox para alinear los elementos */
+  justify-content: space-between; /* Alinea los elementos a los extremos */
+  align-items: center; /* Centra verticalmente los elementos */
+  padding: 10px;
+  border-bottom: 1px solid #ddd; /* Línea separadora opcional */
+}
+
+.board-item {
+  background-color: #fff; /* Fondo blanco para resaltar el nombre del tablero */
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px; /* Espaciado entre los ítems */
+  color: #333; /* Color del texto */
+  font-size: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  position: relative; /* Asegura que z-index funcione si se necesita */
+  z-index: 1001;
+}
+
+.create-board-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff; /* Color de fondo */
+  color: #fff; /* Color del texto */
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Transición suave en hover */
+}
+
+.create-board-btn:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el ratón */
+}
+
+/* Área de trabajo principal */
+main {
+  padding: 20px;
+  margin-right: 300px; /* Espacio para el menú lateral */
+}
+
+.main {
+  padding: 20px;
+}
+
+h1#boardTitle {
+  text-align: center;
+  font-size: 26px;
+  color: #34495e;
+  margin-bottom: 20px;
+}
+
+/* Estilo para el contenedor de columnas */
+.columns-container {
+  display: flex;
+  flex-wrap: nowrap; /* Evita el salto de línea de las columnas */
+  gap: 20px; /* Espacio entre columnas */
+  overflow-x: auto; /* Permite el desplazamiento horizontal si hay muchas columnas */
+  padding: 10px 0; /* Espacio arriba y abajo del contenedor */
+}
+
+/* Estilo para cada columna */
+.column {
+  background: #ecf0f1;
+  padding: 15px; /* Espaciado interno mejorado */
+  margin: 0; /* Elimina el margen derecho */
+  width: 300px; /* Ancho fijo para columnas */
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra ligera para profundidad */
+  display: flex;
+  flex-direction: column; /* Alinea los elementos dentro de la columna verticalmente */
+}
+
+/* Estilo para el encabezado de columna */
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Espacio debajo del encabezado */
+}
+
+/* Estilo para el título del encabezado de columna */
+.column-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+.column-header button {
+  margin-left: 5px; /* Reduce el margen izquierdo para que los botones estén más juntos */
+  margin-right: 5px; /* Reduce el margen derecho para que los botones estén más juntos */
+  padding: 5px 10px; /* Ajusta el padding para un tamaño más compacto */
+  font-size: 14px; /* Ajusta el tamaño de la fuente si es necesario */
+  border-radius: 3px; /* Ajusta el borde redondeado si es necesario */
+}
+
+/* Estilos específicos para cada botón en el encabezado de la columna */
+.column-header .edit-column {
+  background-color: #2ecc71; /* Color para el botón de editar */
+}
+
+.column-header .edit-column:hover {
+  background-color: #27ae60; /* Color de fondo cuando se pasa el cursor sobre el botón de editar */
+}
+
+.column-header .delete-column {
+  background-color: #e74c3c; /* Color para el botón de eliminar */
+}
+
+.column-header .delete-column:hover {
+  background-color: #c0392b; /* Color de fondo cuando se pasa el cursor sobre el botón de eliminar */
+}
+/* Estilo para el botón de agregar tarjeta */
+#addCard {
+  margin: 0; /* Elimina el margen inferior */
+  padding: 10px 20px; /* Espaciado interno del botón */
+  font-size: 16px; /* Tamaño de la fuente */
+  background-color: #3498db; /* Color de fondo del botón */
+  color: #fff; /* Color del texto */
+  border: none; /* Elimina el borde */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  transition: background-color 0.3s; /* Transición suave para el color de fondo */
+}
+
+#addCard:hover {
+  background-color: #2980b9; /* Color de fondo cuando el botón es hover */
+}
+
+
+.tasks-container {
+  min-height: 50px;
+}
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+/* Contenido de la tarea */
+.task-content {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el contenido y los botones */
+}
+
+/* Contenedor de los botones */
+.task-buttons {
+  display: flex;
+  gap: 10px; /* Espacio entre los botones */
+}
+
+/* Botones de la tarea */
+.task-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white; /* Color del icono */
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.task-button:hover {
+  color: white; /* Color del icono al pasar el ratón */
+}
+.task {
+  background: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  cursor: move;
+}
+
+.task h4 {
+  margin: 0 0 5px 0;
+}
+
+.task p {
+  margin: 0;
+}
+
+button {
+  padding: 8px 12px;
+  background: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 2px;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+button.edit-column,
+button.edit-task {
+  background: #2ecc71;
+}
+
+button.delete-column,
+button.delete-task {
+  background: #e74c3c;
+}
+
+button.edit-column:hover,
+button.edit-task:hover {
+  background: #27ae60;
+}
+
+button.delete-column:hover,
+button.delete-task:hover {
+  background: #c0392b;
+}
+
+button.modify-board,
+button.delete-board {
+  background: #3498db;
+  margin-left: 10px;
+}
+
+button.modify-board:hover {
+  background: #2980b9;
+}
+
+button.delete-board {
+  background: #e74c3c;
+}
+
+button.delete-board:hover {
+  background: #c0392b;
+}
+
+/* Modales */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  border-radius: 8px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.modal-content button {
+  width: 100%;
+}
+
+/* Pie de página */
+footer {
+  width: 100%;
+  color: white;
+  background-color: #39A136;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10px;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: absolute;
+  bottom: 0; /* Coloca el footer en la parte inferior */
+  left: 0; /* Alinea el footer con el borde izquierdo */
+  overflow: hidden;
+  min-height: 50px; 
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.footer-imageceet,
+.footer-imagesennova {
+  max-width: 300px;
+  height: auto;
+  margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-image {
+    max-width: 80px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  main {
+    padding: 10px;
+  }
+
+  .footer-content {
+    padding: 10px;
+  }
+
+  .footer-imageceet,
+  .footer-imagesennova {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 16px;
+  }
+
+  .menu-toggle-btn {
+    padding: 20px;
+  }
+
+  main {
+    padding: 5px;
+  }
+
+  .footer-content {
+    padding: 5px;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -2,58 +2,85 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="reset.css" />
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <title>Tablero Kanban</title>
+    <link rel="stylesheet" href="./styles/reset.css" />
+    <link rel="stylesheet" href="./styles/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 <body>
     <header>
-        <!-- Botón de menú accesible -->
         <button id="menu-toggle" class="menu-toggle-btn" aria-expanded="false" aria-controls="side-menu">
             <i class="fas fa-bars" aria-hidden="true"></i>
             <span class="visually-hidden">Abrir menú</span>
         </button>
-
-        <!-- Logo con texto alternativo -->
         <img src="img/LogoBlanco.svg" alt="Logotipo de GICS" class="header-image" />
-
-        <!-- Título principal -->
         <h1 id="board-title">Tablero Kanban</h1>
-
-        <!-- Menú lateral con atributos ARIA -->
-        <nav class="side-menu" id="side-menu" role="navigation" aria-labelledby="menu-toggle">
-            <h2>Menú</h2>
-            <ul>
-                <li><button id="new-board" class="menu-btn" aria-label="Crear un nuevo tablero">Nuevo Tablero</button></li>
-                <li><button id="edit-board" class="menu-btn" aria-label="Editar el tablero actual">Editar Tablero</button></li>
-                <li><button id="delete-board" class="menu-btn" aria-label="Eliminar el tablero actual">Eliminar Tablero</button></li>
-                <li><button id="connect-db-btn" class= "menu-btn" aria-label="Conectar a la base de datos">Conectar a la base de datos</button></li>
-                <p id="db-status-message"></p>
-
-            </li>
-        </nav>
     </header>
 
+    <!-- Menú lateral con atributos ARIA -->
+    <nav class="side-menu" id="side-menu" role="navigation" aria-labelledby="menu-toggle">
+        <div class="menu-section">
+            <h2 class="menu-title">Menú</h2>
+            <ul class="menu-list">
+                <p id="db-status-message" class="db-status-message"></p>
+            </ul>
+        </div>
+        <!-- Contenido del módulo de tableros dentro del menú -->
+        <div class="boards">
+            <h2 class="boards-title">Tableros</h2>
+            <button id="createBoard" class="create-board-btn">Crear Tablero</button>
+            <ul id="boardList" class="board-list"></ul>
+            <button id="toggleVoice" class="toggle-voice-btn">Activar Voz</button>
+        </div>
+    </nav>
+
     <main>
-        <section class="lanes" role="region" aria-label="Columnas del tablero">
-            <div class="swin-lane" id="todo-lane" role="region" aria-label="Columna de tareas por hacer" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
-                <h3 class="heading">Ingresar Nombre</h3>
-                <div class="cards-container" id="cards-1" aria-live="polite">
-                    <!-- Las tareas se agregarán aquí dinámicamente -->
+        <div class="container">
+            <!-- Área de trabajo principal -->
+            <div class="main">
+                <h1 id="boardTitle">Selecciona un tablero</h1>
+                <div id="boardContent">
+                    <button id="addCard" class="add-card-btn">Agregar Tarjeta</button>
+                    <div id="cardsContainer" class="columns-container"></div>
                 </div>
-                <!-- Botón de eliminar columna -->
-                <button class="delete-lane-btn" aria-label="Eliminar columna">
-                    <i class="fas fa-trash" aria-hidden="true"></i>
-                </button>
             </div>
-            <!-- Más columnas se pueden agregar aquí -->
-        </section>
+        </div>
+
+       <!-- Modal para crear/editar tableros -->
+       <div id="boardModal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="closeBoardModal">&times;</span>
+          <h2 id="boardModalTitle">Crear Tablero</h2>
+          <input type="text" id="boardName" placeholder="Nombre del tablero" />
+          <button id="saveBoard" class="save-btn">Guardar</button>
+        </div>
+      </div>
+
+        <!-- Modal para crear/editar tarjetas -->
+        <div id="cardModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeCardModal">&times;</span>
+                <h2 id="cardModalTitle">Crear Tarjeta</h2>
+                <input type="text" id="cardName" placeholder="Nombre de la tarjeta" />
+                <input type="color" id="cardColor" /> <!-- Selector de color -->
+                <button id="saveCard" class="save-btn">Guardar</button>
+            </div>
+        </div>
+
+        <!-- Modal para crear/editar tareas -->
+        <div id="taskModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeTaskModal">&times;</span>
+                <h2 id="taskModalTitle">Crear Tarea</h2>
+                <input type="hidden" id="taskId" />
+                <input type="text" id="taskTitle" placeholder="Título de la tarea" />
+                <textarea id="taskDescription" placeholder="Descripción de la tarea"></textarea>
+                <button id="saveTask" class="save-btn">Guardar</button>
+            </div>
+        </div>
     </main>
 
     <footer>
-        <!-- Logos con texto alternativo -->
         <img src="img/LogoCEET.png" alt="Logotipo del CEET" class="footer-imageceet" />
         <div class="footer-content">
             <p>Centro de Electricidad Electrónica y Telecomunicaciones - Teleinformática - SENA - Regional Distrito Capital Cra. 30 #17B-25Sur, Bogotá</p>
@@ -63,8 +90,12 @@
         <img src="img/Logosennova.svg" alt="Logotipo de Sennova" class="footer-imagesennova" />
     </footer>
 
-    <script src="JavaScript/drag.js"></script>
-    <script src="JavaScript/todo.js"></script>
-    <script src="JavaScript/side-menu.js"></script>
+    <!-- Scripts -->
+    <script type="module" src="./scripts/app.js"></script>
+    <script type="module" src="src/components/side-menu.js"></script>
+    <script type="module" src="src/components/boards.js"></script>
+    <script type="module" src="src/components/cards.js"></script>
+    <script type="module" src="src/components/tasks.js"></script>
+    <script type="module" src="src/components/lectordevoz.js"></script>
 </body>
 </html>
